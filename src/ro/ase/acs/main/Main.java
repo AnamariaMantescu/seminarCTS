@@ -6,7 +6,12 @@ import java.sql.SQLException;
 public class Main {
 
     public static void main(String[] args) {
-        DatabaseConnection dbConnection = new DatabaseConnection("jdbc:sqlite:dbConnection.db");
+        DatabaseConnection dbConnection = null;
+        try {
+            dbConnection = new DatabaseConnection("jdbc:sqlite:dbConnection.db");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         try {
             dbConnection.createTable();
         } catch (SQLException e) {

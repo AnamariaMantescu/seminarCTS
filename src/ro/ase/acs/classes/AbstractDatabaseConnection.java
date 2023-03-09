@@ -1,12 +1,13 @@
 package ro.ase.acs.classes;
 
-import ro.ase.acs.interfaces.DatabaseConnector;
+import ro.ase.acs.interfaces.*;
+import ro.ase.acs.interfaces.Readable;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public abstract class AbstractDatabaseConnection implements DatabaseConnector {
+public abstract class AbstractDatabaseConnection implements Readable, Writable, DatabaseTableCreator, Closable {
     protected Connection connection;
 
     public AbstractDatabaseConnection(String databaseURL) {
@@ -18,9 +19,5 @@ public abstract class AbstractDatabaseConnection implements DatabaseConnector {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public void closeConnection() throws SQLException {
-        connection.close();
     }
 }
