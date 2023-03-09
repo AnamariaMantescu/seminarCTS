@@ -1,29 +1,14 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-//orice
-public class Main {
+package ro.ase.acs.classes;
 
-    public static void main(String[] args) {
-        try {
-            Class.forName("org.sqlite.JDBC");
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:database.db");
-            connection.setAutoCommit(false);
+import java.sql.*;
 
-            createTable(connection);
-            insertData(connection);
-            readData(connection);
+public class DatabaseConnection extends AbstractDatabaseConnection {
 
-            connection.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public DatabaseConnection(String databaseURL) {
+        super(databaseURL);
     }
 
-    private static void createTable(Connection connection) throws SQLException {
+    public void createTable() throws SQLException {
         String sqlDrop = "DROP TABLE IF EXISTS employees";
         String sqlCreate = "CREATE TABLE employees(id INTEGER PRIMARY KEY,"
                 + "name TEXT, address TEXT, salary REAL)";
@@ -35,7 +20,7 @@ public class Main {
         connection.commit();
     }
 
-    private static void insertData(Connection connection) throws SQLException {
+    public void insertData() throws SQLException {
         String sqlInsert = "INSERT INTO employees VALUES(1, 'Popescu Ion', 'Bucharest', 4000)";
         Statement statement = connection.createStatement();
         statement.executeUpdate(sqlInsert);
@@ -54,11 +39,11 @@ public class Main {
         connection.commit();
     }
 
-    private static void readData(Connection connection) throws SQLException {
+    public void readData() throws SQLException {
         String sqlSelect = "SELECT * FROM employees";
         Statement statement = connection.createStatement();
         ResultSet rs = statement.executeQuery(sqlSelect);
-        while(rs.next()) {
+        while (rs.next()) {
             int id = rs.getInt("id");
             System.out.println("id: " + id);
             String name = rs.getString(2);
